@@ -10,11 +10,25 @@ hmtl(ng-app='main')
 
     script(type='text/javascript', src='js/jquery-1.10.2.min.js')
     script(type='text/javascript', src='js/ace.min.js')
+    script(type='text/javascript', src='js/ace/theme-monokai.js')
+    script(type='text/javascript', src='js/ace/mode-python.js')
     script(type='text/javascript', src='js/angular.min.js')
-    script(type='text/javascript', src='js/angular-resource.min.js')
+    script(type='text/javascript', src='js/angular/angular-resource.min.js')
+    script(type='text/javascript', src='js/angular/ui-ace.js')
     script(type='text/javascript', src='js/bootstrap.min.js')
     script(type='text/javascript', src='js/js.js')
     
     title MOKIKPython
   body
-    | Hello!
+    div(ng-controller='IDEController')
+      nav.navbar.navbar-inverse.navbar-static-top(role='navigation')
+        .navbar-header
+          a.navbar-brand MOKIKPython
+      .editor(ui-ace='{onLoad: editorLoaded}')
+        | print "Hello World!"
+      .mover
+      .output_box
+        .output_hide
+          i.glyphicon.glyphicon-chevron-down
+        .output
+          | lol

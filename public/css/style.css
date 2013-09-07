@@ -1,0 +1,70 @@
+body, html {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.allcontainer {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.editor {
+  position: absolute;
+  bottom: 205px;
+  top: 51px;
+  width: 100%;
+}
+
+.mover {
+  cursor: ns-resize;
+  height: 5px;
+  width: 100%;
+  position: absolute;
+  bottom: 200px;
+  background-color: black;
+}
+
+.output_box {
+  position: absolute;
+  height: 200px;
+  padding: 2px;
+  width: 100%;
+  bottom: 0;
+}
+
+.output_hide {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  vertical-align: middle;
+  text-align: center;
+  background-color: black;
+  color: #777777;
+  border-bottom-left-radius: 5px;
+  z-index: 1;
+}
+
+.output_hide:hover {
+  color: #ffffff;
+}
+
+.output {
+  font-family: monospace;
+  font-size: 12px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 3px;
+  background-color: #222222;
+  color: #dddddd;
+}
