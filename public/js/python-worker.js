@@ -1,33 +1,41 @@
 ;(function () {
-    self.console = {
-        log: function (obj) {
-            postMessage({
-                type: 'log',
-                data: obj
-            });
-        }
-    };
-    
-    importScripts('js/python.opt.js');
-
-    var handleChr = function {
-        if (chr !== null) {
-            postMessage(String.fromCharCode(chr));
-        }
+  self.console = {
+    log: function (obj) {
+      postMessage({
+        type: 'log',
+        data: obj
+      });
     }
-    
-    Python.initialize(null, handleChr, handleChr);
+  };
 
-    addEventListener('message', function (e) {
-        if (Python.isFinished(e.data)) {
-            var result = Python.eval(e.data);
-            if (result !== null && result !== undefined) {
-                postMessage('\n--------------------------\nResult: ' + result);
-            }
-        } else {
-            postMessage('\nCommand not finished.\n');
-        }
-    }, false);
+  var handleChr = function (chr) {
+    if (chr !== null) {
+      postMessage(String.fromCharCode(chr));
+    }
+  }
 
-    postMessage('');
+  var setStatus = function(msg) {
+    postMessage({type: 'status', data: msg});
+  }
+
+  setStatus('loading python...');
+
+  importScripts('python.opt.js');
+
+  Python.initialize(null, handleChr, handleChr);
+
+  addEventListener('message', function (e) {
+    setStatus('executing...');
+    if (Python.isFinished(e.data)) {
+      var result = Python.eval(e.data);
+      /*if (result !== null && result !== undefined) {
+        postMessage('\n--------------------------\nResult: ' + result);
+      }*/
+      setStatus('finished');
+    } else {
+      setStatus('executing...');
+    }
+  }, false);
+
+  setStatus('python loaded');
 })();

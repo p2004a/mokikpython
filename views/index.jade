@@ -20,10 +20,12 @@ hmtl(ng-app='main')
     
     title MOKIKPython
   body
-    div(ng-controller='IDEController')
+    div(ng-controller='IDEController', ng-init='init()')
       nav.navbar.navbar-inverse.navbar-static-top(role='navigation')
         .navbar-header
-          a.navbar-brand MOKIKPython
+          span.navbar-brand MOKIKPython
+        .status.navbar-text.pull-right.
+          {{ status }}
       .editor(ui-ace='{onLoad: editorLoaded}')
         | print "Hello World!"
       .mover
@@ -31,4 +33,4 @@ hmtl(ng-app='main')
         .output_hide
           i.glyphicon.glyphicon-chevron-down
         .output
-          | lol
+          {{ output }}

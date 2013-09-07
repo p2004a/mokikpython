@@ -22,16 +22,55 @@ angular.module('main', ['main.db'])
 }])
 
 function IDEController($scope) {
+  $scope.output = '';
+  $scope.status = 'loading page...'
+
   $scope.editorLoaded = function(editor) {
+    $scope.editor = editor;
+
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/python");
+
     editor.commands.addCommand({
         name: 'execProgram',
         bindKey: 'Ctrl-Enter',
         exec: function(editor) {
-            console.log('command');
-        },
-        readOnly: true // false if this command should not apply in readOnly mode
+            $scope.output = '';
+            $scope.worker.postMessage(editor.getValue());
+        }
     });
   };
+
+  $scope.init = function() {
+    $scope.startWorker();
+  }
+
+  $scope.startWorker = function () {
+    $scope.worker = new Worker('js/python-worker.js');
+    $scope.worker.addEventListener('message', function (e) {
+      $scope.$apply(function () {
+        if (e.data instanceof Object) {
+          switch (e.data.type) {
+            case 'log':
+              console.log(e.data.data);
+              break;
+
+            case 'status':
+              $scope.setStatus(e.data.data);
+              break;
+
+            default:
+              console.error("Unknown command from worker");
+          }
+        } else {
+          $scope.output += e.data;
+        }
+      });
+    }, false);
+  }
+
+  $scope.setStatus = function(status) {
+    console.log('status: ' + status);
+    $scope.status = status;
+  }
 }
