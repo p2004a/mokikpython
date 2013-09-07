@@ -13,4 +13,4 @@ This project couldn't exists without *awesome* people creating:
   * [Ace](http://ace.c9.io/)
   * [Express](http://expressjs.com/)
 
-Ang many, many others contributing to the projects related with listed ones.
+And many, many others contributing to the projects related with listed.
