@@ -20,6 +20,45 @@ angular.module('main', ['main.db'])
     //.when('/users', {templateUrl: 'partials/users.html', controller: UsersCtrl})
     //.otherwise({redirectTo: '/users'});
 }])
+  .directive('mover', function factory() {
+    var d = {
+      replace: false,
+      restrict: 'C',
+      transclude: false,
+      scope: false,
+      controller: function($element) {
+        e = $($element);
+
+        editor = $('.editor');
+        output_box = $('.output_box');
+
+        e.on('mousedown', function(ev) {
+          var y = ev.screenY;
+
+          doc = $(document);
+
+          doc.on('mouseup', function(ev) {
+            doc.unbind('mouseup mousemove');
+          });
+
+          doc.on('mousemove', function(ev) {
+            var inc = y - ev.screenY;
+            y = ev.screenY;
+
+            function changeVal(inc, obj, attr) {
+              var val = obj.css(attr);
+              val = parseFloat(val.substr(0, val.length - 2));
+              obj.css(attr, (val + inc) + 'px');
+            }
+
+            changeVal(inc, editor, 'bottom');
+            changeVal(inc, output_box, 'height');
+          });
+        });
+      }
+    };
+   return d;
+  });
 
 function IDEController($scope) {
   $scope.output = '';
