@@ -25,8 +25,8 @@ angular.module('main', ['main.db'])
       replace: false,
       restrict: 'C',
       transclude: false,
-      scope: false,
-      controller: function($element) {
+      scope: true,
+      controller: function($element, $scope) {
         e = $($element);
 
         editor = $('.editor');
@@ -53,6 +53,8 @@ angular.module('main', ['main.db'])
 
             changeVal(inc, editor, 'bottom');
             changeVal(inc, output_box, 'height');
+
+            $scope.editor.resize(true);
           });
         });
       }
