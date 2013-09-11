@@ -33,6 +33,8 @@ angular.module('main', ['main.db'])
         output_box = $('.output_box');
 
         e.on('mousedown', function(ev) {
+          ev.preventDefault();
+
           var y = ev.screenY;
 
           doc = $(document);
@@ -48,7 +50,17 @@ angular.module('main', ['main.db'])
             function changeVal(inc, obj, attr) {
               var val = obj.css(attr);
               val = parseFloat(val.substr(0, val.length - 2));
-              obj.css(attr, (val + inc) + 'px');
+
+              var winheight = Math.max($(document).height(), $(window).height());
+
+              var editortop = editor.css('top');
+              editortop = parseFloat(editortop.substr(0, editortop.length - 2));
+              editortop += 50;
+
+              var maxbottom = winheight - editortop;
+
+              var new_val = Math.min(maxbottom, Math.max(50, val + inc));
+              obj.css(attr, (new_val) + 'px');
             }
 
             changeVal(inc, editor, 'bottom');

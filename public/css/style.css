@@ -28,6 +28,7 @@ body, html {
   left: 0;
   top: -5px;
   background-color: black;
+  z-index: 1000;
 }
 
 .output_box {
@@ -50,7 +51,7 @@ body, html {
   background-color: black;
   color: #777777;
   border-bottom-left-radius: 5px;
-  z-index: 1;
+  z-index: 1002;
 }
 
 .output_hide:hover {
