@@ -27,17 +27,19 @@ angular.module('main', ['main.db'])
       transclude: false,
       scope: true,
       controller: function($element, $scope) {
-        e = $($element);
+        var e = $($element);
 
-        editor = $('.editor');
-        output_box = $('.output_box');
+        var editor = $('.editor');
+        var output_box = $('.output_box');
+        var output_hide = $('.output_hide');
+        var output = $('.output');
 
-        e.on('mousedown', function(ev) {
+        var moverClick = function(ev) {
           ev.preventDefault();
 
           var y = ev.screenY;
 
-          doc = $(document);
+          var doc = $(document);
 
           doc.on('mouseup', function(ev) {
             doc.unbind('mouseup mousemove');
@@ -68,6 +70,54 @@ angular.module('main', ['main.db'])
 
             $scope.editor.resize(true);
           });
+        }
+
+        e.on('mousedown', moverClick);
+
+        var old_val = {
+          editor: null,
+          output_box: null
+        };
+        output_hide.on('click', function (ev) {
+          $scope.output_hidden = !$scope.output_hidden;
+          switch ($scope.output_hidden) {
+            case true:
+              old_val.editor = editor.css('bottom');
+              old_val.output_box = output_box.css('height');
+
+              editor.css('bottom', '5px');
+              output_box.css('height', '0px');
+
+              output_hide.removeClass('output_hide_show');
+              output_hide.addClass('output_hide_hide');
+
+              output_hide.find('i').removeClass('glyphicon-chevron-down');
+              output_hide.find('i').addClass('glyphicon-chevron-up');
+
+              output.css('display', 'none');
+
+              $scope.editor.resize(true);
+
+              e.unbind('mousedown');
+              break;
+
+            case false:
+              editor.css('bottom', old_val.editor);
+              output_box.css('height', old_val.output_box);
+
+              output_hide.removeClass('output_hide_hide');
+              output_hide.addClass('output_hide_show');
+
+              output_hide.find('i').removeClass('glyphicon-chevron-up');
+              output_hide.find('i').addClass('glyphicon-chevron-down');
+
+              output.css('display', 'block');
+
+              $scope.editor.resize(true);
+
+              e.on('mousedown', moverClick);
+              break;
+          }
         });
       }
     };
@@ -76,7 +126,8 @@ angular.module('main', ['main.db'])
 
 function IDEController($scope) {
   $scope.output = '';
-  $scope.status = 'loading page...'
+  $scope.status = 'loading page...';
+  $scope.output_hidden = false;
 
   $scope.editorLoaded = function(editor) {
     $scope.editor = editor;
